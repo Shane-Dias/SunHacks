@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const doctorSchema = new mongoose.Schema({
-   username: String,
+   username: { type: String, required: true },
    email: { type: String, unique: true, required: true },
    password: { type: String, required: true },
    role: { type: String, enum: ['doctor', 'patient'], required: true, default: 'doctor' },
+   contact: { type: String, required: false }, // Made optional
    patientRecord: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Patient'

@@ -5,7 +5,7 @@ import { FiDownload, FiFile, FiCalendar, FiClock, FiAlertCircle } from 'react-ic
 const DocumentAccess = () => {
   const { accessToken } = useParams();
   const navigate = useNavigate();
-  const [document, setDocument] = useState(null);
+  const [documentData, setDocumentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -15,18 +15,36 @@ const DocumentAccess = () => {
 
   const fetchDocumentInfo = async () => {
     try {
+      console.log('Fetching document info for access token:', accessToken);
       const response = await fetch(`/api/documents/public/access/${accessToken}`);
+      
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
       
       if (response.ok) {
         const data = await response.json();
-        setDocument(data.document);
+        console.log('Document data received:', data);
+        setDocumentData(data.document);
+      } else if (response.status === 404) {
+        setError('Document not found or QR code has expired. Please request a new QR code.');
+      } else if (response.status === 500) {
+        setError('Server error. Please try again later.');
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Document access failed');
+        try {
+          const errorData = await response.json();
+          console.error('Error response:', errorData);
+          setError(errorData.error || 'Document access failed');
+        } catch (parseError) {
+          setError(`Access failed with status: ${response.status}`);
+        }
       }
     } catch (error) {
       console.error('Error fetching document:', error);
-      setError('Failed to access document');
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        setError('Failed to access document: ' + error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -34,24 +52,44 @@ const DocumentAccess = () => {
 
   const handleDownload = async () => {
     try {
+      console.log('Downloading document for access token:', accessToken);
       const response = await fetch(`/api/documents/public/download/${accessToken}`);
+      
+      console.log('Download response status:', response.status);
+      console.log('Download response headers:', response.headers);
       
       if (response.ok) {
         const blob = await response.blob();
+        console.log('Blob received, size:', blob.size);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = document.originalName;
+        a.download = documentData.originalName;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
+        console.log('Download completed successfully');
+      } else if (response.status === 404) {
+        setError('Document not found or QR code has expired. Please request a new QR code.');
+      } else if (response.status === 500) {
+        setError('Server error during download. Please try again later.');
       } else {
-        setError('Failed to download document');
+        try {
+          const errorText = await response.text();
+          console.error('Download failed:', response.status, errorText);
+          setError('Download failed: ' + response.status);
+        } catch (parseError) {
+          setError(`Download failed with status: ${response.status}`);
+        }
       }
     } catch (error) {
       console.error('Download error:', error);
-      setError('Failed to download document');
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        setError('Network error during download. Please check your connection and try again.');
+      } else {
+        setError('Failed to download document: ' + error.message);
+      }
     }
   };
 
@@ -111,7 +149,7 @@ const DocumentAccess = () => {
     );
   }
 
-  if (!document) {
+  if (!documentData) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -141,12 +179,12 @@ const DocumentAccess = () => {
         {/* Document Card */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <div className="text-center mb-6">
-            {getDocumentIcon(document.documentType)}
+            {getDocumentIcon(documentData.documentType)}
             <h2 className="text-xl font-semibold text-gray-900 mt-4 mb-2">
-              {document.originalName}
+              {documentData.originalName}
             </h2>
             <p className="text-gray-600 capitalize">
-              {document.documentType.replace('_', ' ')}
+              {documentData.documentType.replace('_', ' ')}
             </p>
           </div>
 
@@ -156,7 +194,7 @@ const DocumentAccess = () => {
               <FiFile className="h-5 w-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900">File Size</p>
-                <p className="text-sm text-gray-600">{formatFileSize(document.size)}</p>
+                <p className="text-sm text-gray-600">{formatFileSize(documentData.size)}</p>
               </div>
             </div>
 
@@ -164,17 +202,17 @@ const DocumentAccess = () => {
               <FiCalendar className="h-5 w-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900">Uploaded</p>
-                <p className="text-sm text-gray-600">{formatDate(document.uploadedAt)}</p>
+                <p className="text-sm text-gray-600">{formatDate(documentData.uploadedAt)}</p>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          {document.description && (
+          {documentData.description && (
             <div className="mb-6">
               <h3 className="text-sm font-medium text-gray-900 mb-2">Description</h3>
               <p className="text-gray-600 bg-gray-50 p-3 rounded-lg">
-                {document.description}
+                {documentData.description}
               </p>
             </div>
           )}
@@ -186,7 +224,7 @@ const DocumentAccess = () => {
               <div>
                 <p className="text-sm font-medium text-yellow-800">Access Expires</p>
                 <p className="text-sm text-yellow-700">
-                  This document access will expire on {formatDate(document.expiresAt)}
+                  This document access will expire on {formatDate(documentData.expiresAt)}
                 </p>
               </div>
             </div>

@@ -197,6 +197,7 @@ const generateQRCode = async (req, res) => {
 const accessDocumentViaQR = async (req, res) => {
   try {
     const { accessToken } = req.params;
+    console.log('QR Code Access Request:', { accessToken, timestamp: new Date().toISOString() });
 
     const document = await Document.findOne({
       'qrCode.accessToken': accessToken,
@@ -205,10 +206,17 @@ const accessDocumentViaQR = async (req, res) => {
     });
 
     if (!document) {
+      console.log('Document not found or expired for access token:', accessToken);
       return res.status(404).json({ error: 'Document access expired or invalid' });
     }
 
-    // Return document metadata for viewing
+    console.log('Document found for QR access:', { 
+      documentId: document._id, 
+      originalName: document.originalName,
+      expiresAt: document.qrCode.expiresAt 
+    });
+
+    // QR code access bypasses all access control - anyone with the link can view
     res.json({
       document: {
         id: document._id,
@@ -232,6 +240,7 @@ const accessDocumentViaQR = async (req, res) => {
 const downloadDocumentViaQR = async (req, res) => {
   try {
     const { accessToken } = req.params;
+    console.log('QR Code Download Request:', { accessToken, timestamp: new Date().toISOString() });
 
     const document = await Document.findOne({
       'qrCode.accessToken': accessToken,
@@ -240,9 +249,17 @@ const downloadDocumentViaQR = async (req, res) => {
     });
 
     if (!document) {
+      console.log('Document not found or expired for download token:', accessToken);
       return res.status(404).json({ error: 'Document access expired or invalid' });
     }
 
+    console.log('Document found for QR download:', { 
+      documentId: document._id, 
+      originalName: document.originalName,
+      expiresAt: document.qrCode.expiresAt 
+    });
+
+    // QR code access bypasses all access control - anyone with the link can download
     // Decrypt the document
     const encryptionKey = getEncryptionKey();
     const decryptedData = document.decryptDocument(encryptionKey);

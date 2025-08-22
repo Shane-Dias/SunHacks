@@ -24,9 +24,10 @@ const Documents = () => {
   const fetchPatients = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/patients', {
+      const response = await fetch('http://localhost:5000/api/patients', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
         }
       });
       
@@ -34,7 +35,7 @@ const Documents = () => {
         const data = await response.json();
         setPatients(data.patients || []);
       } else {
-        console.error('Failed to fetch patients');
+        console.error('Failed to fetch patients:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Error fetching patients:', error);

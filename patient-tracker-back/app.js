@@ -27,15 +27,13 @@ const mongoUri = `mongodb+srv://Shane123:${process.env.MONGO_PWD}@cluster0.je2az
 console.log('Attempting to connect to MongoDB...');
 
 mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+  serverSelectionTimeoutMS: 10000, // Timeout after 10s
   socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
   family: 4, // Use IPv4, skip trying IPv6
   maxPoolSize: 10, // Maintain up to 10 socket connections
   minPoolSize: 1, // Maintain at least 1 socket connection
   maxIdleTimeMS: 30000, // Close sockets after 30s of inactivity
-  connectTimeoutMS: 10000, // Give up initial connection after 10s
+  connectTimeoutMS: 15000, // Give up initial connection after 15s
 });
 mongoose.connection.on('connected', () => console.log('✅ Connected to MongoDB successfully'));
 mongoose.connection.on('error', (err) => console.log('❌ Error connecting to MongoDB:', err));
@@ -44,6 +42,15 @@ mongoose.connection.on('disconnected', () => console.log('⚠️ Disconnected fr
 // Public routes (no authentication required)
 app.use('/api/doctors', doctorRoutes); // login/register must be public
 app.use('/api/documents/public', publicDocumentRoutes);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    message: 'Backend is running'
+  });
+});
 
 // Protected routes (require authentication)
 app.use(verifyToken);

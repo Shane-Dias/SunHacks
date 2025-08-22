@@ -38,20 +38,34 @@ registerUser = async (req, res) => {
         username,
         email, 
         password, 
-        role: 'patient'
+        role: 'patient',
+        contact: userData.contact || ''
       });
       await patientUser.save();
       
+      // Create a Patient record and link to auth user
+      const newPatientRecord = new Patient({ 
+        name: username,
+        contact: userData.contact || ''
+      });
+      await newPatientRecord.save();
+      
+      // Link the patient record to the user
+      patientUser.patientRecord = newPatientRecord._id;
+      await patientUser.save();
       
       const token = jwt.sign({ 
         _id: patientUser._id, 
         role: 'patient',
-        
+        patientRecordId: newPatientRecord._id
       }, process.env.JWT_SECRET);
+      
+      const userDataOut = patientUser.toObject();
+      delete userDataOut.password;
       
       res.status(201).send({ 
         message: "Patient registered successfully",
-        user: username,
+        user: userDataOut,
         token 
       });
     } else {

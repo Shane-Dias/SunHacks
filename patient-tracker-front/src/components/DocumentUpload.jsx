@@ -8,7 +8,7 @@ const DocumentUpload = ({ patientId, onUploadSuccess }) => {
     documentType: 'medical_record',
     description: '',
     tags: '',
-    accessLevel: 'private'
+    accessLevel: 'doctor_only'
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
