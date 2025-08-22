@@ -1,7 +1,4 @@
-import { action as loginAction } from './pages/Login';
-import { action as registerAction } from './pages/Register';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ProtectedRoute } from './ProtectedRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { 
@@ -14,10 +11,17 @@ import {
   AppointmentsPage, 
   ManageAppointments, 
   HealthMetrics,
-  PatientDashboard // Import the PatientDashboard component
+  PatientDashboard,
+  Documents, 
+  DocumentAccess 
 } from './pages';
 import { store } from './store';
+
+// Import components
 import { SinglePatient } from './components';
+import { ProtectedRoute } from './ProtectedRoute';
+
+// Import loaders
 import { loader as patientLoader } from './pages/Patients';
 import { loader as singlePatientLoader } from './components/SinglePatient';
 import { loader as singlePatientLoaderEdit } from './components/PatientRegister';
@@ -25,15 +29,21 @@ import { loader as singlePatientLoaderEdit } from './components/PatientRegister'
 import { loader as singleAppointmentEditLoader } from './components/AppointmentRegister';
 import { loader as healthMetricsLoader } from './pages/HealthMetrics';
 
+// Import actions
+import { action as loginAction } from './pages/Login';
+import { action as registerAction } from './pages/Register';
+
+// Create QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
-      // cacheTime: 1000,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes (formerly cacheTime)
     },
   },
 });
 
+// Router configuration
 const router = createBrowserRouter([
   {
     path: '/',
@@ -58,7 +68,7 @@ const router = createBrowserRouter([
             <ProfilePage />
           </ProtectedRoute>
         ),
-        loader: singlePatientLoaderEdit(queryClient)
+        loader: singlePatientLoaderEdit(queryClient),
       },
       {
         path: 'medical-history',
@@ -67,7 +77,7 @@ const router = createBrowserRouter([
             <Patients />
           </ProtectedRoute>
         ),
-        loader: patientLoader(queryClient)
+        loader: patientLoader(queryClient),
       },
       {
         path: 'medical-history/:id',
@@ -76,25 +86,25 @@ const router = createBrowserRouter([
             <SinglePatient />
           </ProtectedRoute>
         ),
-        loader: singlePatientLoader(queryClient)
+        loader: singlePatientLoader(queryClient),
       },
       {
-        path: 'appointments/',
+        path: 'appointments',
         element: (
           <ProtectedRoute>
             <AppointmentsPage />
           </ProtectedRoute>
         ),
-        // loader: appointmentsLoader(queryClient)
+        // Removed loader: appointmentsLoader(queryClient),
       },
       {
-        path: 'manage-appointments/',
+        path: 'manage-appointments',
         element: (
           <ProtectedRoute>
             <ManageAppointments />
           </ProtectedRoute>
         ),
-        loader: singleAppointmentEditLoader(queryClient)
+        loader: singleAppointmentEditLoader(queryClient),
       },
       {
         path: 'health-metrics/:id',
@@ -105,7 +115,6 @@ const router = createBrowserRouter([
         ),
         loader: healthMetricsLoader(queryClient)
       },
-      // Add Patient Dashboard Route
       {
         path: 'patient-dashboard',
         element: (
@@ -113,8 +122,20 @@ const router = createBrowserRouter([
             <PatientDashboard />
           </ProtectedRoute>
         )
-      }
-    ]
+      },
+      {
+        path: 'documents',
+        element: (
+          <ProtectedRoute>
+            <Documents />
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: '/document-access/:accessToken',
+    element: <DocumentAccess />,
   },
   {
     path: '/login',
@@ -128,6 +149,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Main App component
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>

@@ -34,6 +34,7 @@ const Navbar = () => {
     { id: 2, url: '/manage-patient', text: 'Manage Patient', role: 'patient' },
     { id: 3, url: '/medical-history', text: 'Medical Records', role: 'doctor' },
     { id: 4, url: '/appointments', text: 'Appointments' },
+    { id: 5, url: '/documents', text: 'Documents' },
   ];
 
   const filteredLinks = links.filter((link) => {
