@@ -104,7 +104,7 @@ const router = createBrowserRouter([
 {
  path: '/register',
  element: <Register />,
- action: registerAction,
+ action: registerAction(store),
 },
 ]);
 

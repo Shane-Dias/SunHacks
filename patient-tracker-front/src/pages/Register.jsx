@@ -7,12 +7,13 @@ import { loginUser } from '../features/userSlice';
 import axios from 'axios';
 
 export const action = (store) => async ({ request }) => {
+  console.log("In action function");
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   console.log('Registration data:', data); // Debug log
 
   try {
-    const response = await axios.post('https://localhost:3000/api/doctors/register', data);
+    const response = await axios.post('http://localhost:5000/api/doctors/register', data);
     console.log('Registration response:', response); // Debug log
     
     if (response.data && response.data.user) {
@@ -47,7 +48,7 @@ const Register = () => {
   return (
     <section className='min-h-screen grid place-items-center bg-gray-50 py-12'>
       <Form
-        method='post'
+        method='POST'
         className='card w-96 p-8 bg-white shadow-lg flex flex-col gap-y-6 rounded-xl border border-primaryLight'
       >
         <h4 className='text-center text-3xl font-bold text-gray-900'>Register</h4>

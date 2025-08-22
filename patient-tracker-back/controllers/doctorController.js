@@ -35,38 +35,23 @@ registerUser = async (req, res) => {
     } else if (role === 'patient') {
       // Create patient user in Doctor collection (for authentication)
       const patientUser = new Doctor({ 
-        username, 
+        username,
         email, 
         password, 
         role: 'patient'
       });
       await patientUser.save();
       
-      // Create patient record in Patient collection
-      const patientRecord = new Patient({
-        name: username,
-        email: email,
-        // Add other patient data from userData
-        ...userData
-      });
-      await patientRecord.save();
-      
-      // Link patient record to user
-      patientUser.patientRecord = patientRecord._id;
-      await patientUser.save();
-      
-      const userDataResponse = patientUser.toObject();
-      delete userDataResponse.password;
       
       const token = jwt.sign({ 
         _id: patientUser._id, 
         role: 'patient',
-        patientRecordId: patientRecord._id 
+        
       }, process.env.JWT_SECRET);
       
       res.status(201).send({ 
         message: "Patient registered successfully",
-        user: userDataResponse,
+        user: username,
         token 
       });
     } else {
@@ -75,6 +60,7 @@ registerUser = async (req, res) => {
     
   } catch (error) {
     res.status(400).send(error);
+    console.log(error)
   }
 };
 

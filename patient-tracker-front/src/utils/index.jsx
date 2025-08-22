@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export const customFetch = axios.create({
-  baseURL: 'https://localhost:3000/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
 export const customFetchNoToken = axios.create({
-  baseURL: 'https://localhost:3000/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
 // Add token to requests
