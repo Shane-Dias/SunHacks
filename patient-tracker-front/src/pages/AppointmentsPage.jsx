@@ -18,6 +18,7 @@ const AppointmentsPage = () => {
       if (role === 'doctor') {
         // Fetch appointments for doctor
         res = await customFetch.get(`/appointments/doctor/${user._id}`);
+        console.log(res.data)
       } else if (role === 'patient') {
         // Fetch appointments for patient
         res = await customFetch.get(`/appointments/patient/${patientRecordId}`);

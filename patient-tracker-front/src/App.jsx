@@ -22,7 +22,7 @@ import { SinglePatient } from './components';
 import { ProtectedRoute } from './ProtectedRoute';
 
 // Import loaders
-import { loader as patientLoader } from './pages/Patients';
+// import Patients from './pages/Patients.jsx';
 import { loader as singlePatientLoader } from './components/SinglePatient';
 import { loader as singlePatientLoaderEdit } from './components/PatientRegister';
 // import { loader as appointmentsLoader } from './pages/AppointmentsPage';
@@ -71,14 +71,13 @@ const router = createBrowserRouter([
         loader: singlePatientLoaderEdit(queryClient),
       },
       {
-        path: 'medical-history',
-        element: (
-          <ProtectedRoute>
-            <Patients />
-          </ProtectedRoute>
-        ),
-        loader: patientLoader(queryClient),
-      },
+  path: 'medical-history',
+  element: (
+    <ProtectedRoute>
+      <Patients />
+    </ProtectedRoute>
+  ),
+},
       {
         path: 'medical-history/:id',
         element: (

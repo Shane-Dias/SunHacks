@@ -41,6 +41,7 @@ scheduleAppointment = async (req, res) => {
       res.status(201).json(newAppointment);
   } catch (err) {
       res.status(400).json({ message: err.message });
+      console.log(err)
   }
 };
 

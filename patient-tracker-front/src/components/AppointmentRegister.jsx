@@ -72,7 +72,7 @@ const AppointmentRegister = ({ onSubmit })=>{
        <Form method='post' onSubmit={handleSubmit}>
            <h4 className='text-center text-3xl font-bold'>Manage Appointment</h4>
            <div className='flex flex-wrap gap-3 items-center justify-center'>
-               <FormInput type='text' label='Date' name='date' value={formData.date} onChange={handleChange} size={'w-[250px]'}/>
+               <FormInput type='date' label='Date' name='date' value={formData.date} onChange={handleChange} size={'w-[250px]'}/>
                <FormInput type='text' label='purpose' name='purpose' value={formData.purpose} onChange={handleChange} size={'w-[500px]'}/>
            </div>
            <div className='mt-4'>
