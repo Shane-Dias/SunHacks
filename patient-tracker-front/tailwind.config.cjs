@@ -6,12 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#ffb3c6',
-        primaryLight: '#ffd1dc',
-        primaryMedium: '#ff85a2',
+        "primary": "#e699ae",
+        "primaryLight": "#e6b8c4",
+        "primaryMedium": "#e66d89"
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Roboto Slab', 'serif'], // Changed from Inter to Roboto Slab
       },
     },
   },

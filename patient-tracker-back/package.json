@@ -9,11 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@google/generative-ai": "^0.24.1",
-=======
     "@google/generative-ai": "^0.2.1",
->>>>>>> 3fa12af67a4546f9cb041b31fa62a8e4284bf85f
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -21,10 +17,6 @@
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "express-rate-limit": "^7.1.5",
-<<<<<<< HEAD
-    "install": "^0.13.0",
-=======
->>>>>>> 3fa12af67a4546f9cb041b31fa62a8e4284bf85f
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.10.0",
     "mongoose": "^8.0.2",
@@ -37,11 +29,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-<<<<<<< HEAD
-  }
-=======
   },
   "author": "Your Name",
   "license": "ISC"
->>>>>>> 3fa12af67a4546f9cb041b31fa62a8e4284bf85f
 }
