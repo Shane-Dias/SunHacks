@@ -1,4 +1,3 @@
-import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -11,7 +10,8 @@ import {
   Register, 
   AppointmentsPage, 
   ManageAppointments, 
-  HealthMetrics, 
+  HealthMetrics,
+  PatientDashboard,
   Documents, 
   DocumentAccess 
 } from './pages';
@@ -25,7 +25,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { loader as patientLoader } from './pages/Patients';
 import { loader as singlePatientLoader } from './components/SinglePatient';
 import { loader as singlePatientLoaderEdit } from './components/PatientRegister';
-import { loader as appointmentsLoader } from './pages/AppointmentsPage';
+// import { loader as appointmentsLoader } from './pages/AppointmentsPage';
 import { loader as singleAppointmentEditLoader } from './components/AppointmentRegister';
 import { loader as healthMetricsLoader } from './pages/HealthMetrics';
 
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
             <AppointmentsPage />
           </ProtectedRoute>
         ),
-        loader: appointmentsLoader(queryClient),
+        // Removed loader: appointmentsLoader(queryClient),
       },
       {
         path: 'manage-appointments',
@@ -113,7 +113,15 @@ const router = createBrowserRouter([
             <HealthMetrics />
           </ProtectedRoute>
         ),
-        loader: healthMetricsLoader(queryClient),
+        loader: healthMetricsLoader(queryClient)
+      },
+      {
+        path: 'patient-dashboard',
+        element: (
+          <ProtectedRoute>
+            <PatientDashboard />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'documents',

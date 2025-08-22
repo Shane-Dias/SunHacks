@@ -77,21 +77,21 @@ const Register = () => {
           </select>
         </div>
 
-        <FormInput type='text' label='username' name='username' required />
-        <FormInput type='email' label='email' name='email' required />
-        <FormInput type='password' label='password' name='password' required />
-        
+        <FormInput type='text' label='Full Name' name='username' required />
+        <FormInput type='email' label='Email' name='email' required />
+        <FormInput type='password' label='Password' name='password' required />
+
         {/* Additional Patient Fields */}
         {role === 'patient' && (
           <>
-            <FormInput type='text' label='Full Name' name='name' required />
-            <FormInput type='date' label='Date of Birth' name='dateOfBirth' />
+            {/* <FormInput type='text' label='Full Name' name='name' required /> */}
+            {/* <FormInput type='date' label='Date of Birth' name='dateOfBirth' /> */}
             <FormInput type='text' label='Contact Number' name='contact' />
           </>
         )}
         
         <div className='mt-4'>
-          <SubmitBtn text={isSubmitting ? 'Registering...' : 'register'} />
+          <SubmitBtn text={isSubmitting ? 'Registering...' : 'Register'} />
         </div>
         
         <p className='text-center text-gray-600'>

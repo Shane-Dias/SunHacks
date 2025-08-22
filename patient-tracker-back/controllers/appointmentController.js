@@ -98,6 +98,38 @@ deleteAppointment = async (req, res) => {
   }
 };
 
+// Add this to your appointmentController.js
+getAppointmentsByPatient = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+    console.log('Fetching appointments for patient:', patientId);
+
+    const appointments = await Appointment.find({ patient: patientId })
+      .populate('patient', 'username contact') // <-- populate patient details
+      .populate('doctor', 'username email name contact') // optional: also populate doctor if needed
+      .exec();
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error('Error fetching patient appointments:', error);
+    res.status(500).json({ message: 'Error fetching appointments' });
+  }
+};
+
+getAppointmentsByDoctor = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+    const appointmentsWithPatients = await Appointment.find({ doctor: doctorId })
+      .populate('patient', 'username contact') // <-- use username and contact
+      .exec();
+
+    res.status(200).json(appointmentsWithPatients);
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    res.status(500).json({ message: 'Error fetching appointments' });
+  }
+}
 
 
-module.exports = { getAllAppointments,getAppointmentById, scheduleAppointment, getAppointmentsByDoctor, updateAppointment, deleteAppointment };
+
+module.exports = { getAllAppointments,getAppointmentById, scheduleAppointment, getAppointmentsByDoctor, updateAppointment, deleteAppointment, getAppointmentsByPatient,getAppointmentsByDoctor };
