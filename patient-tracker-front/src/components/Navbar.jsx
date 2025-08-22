@@ -31,9 +31,9 @@ const Navbar = () => {
 
   const links = [
     { id: 1, url: '/', text: 'Home' },
-    { id: 2, url: '/manage-patient', text: 'Manage Patient', role: 'patient' },
+    { id: 2, url: '/appointments', text: 'Appointments', role: 'doctor' },
     { id: 3, url: '/medical-history', text: 'Medical Records', role: 'doctor' },
-    { id: 4, url: '/appointments', text: 'Appointments' },
+    { id: 4, url: '/patient-dashboard', text: 'Appointments', role:'patient' },
     { id: 5, url: '/documents', text: 'Documents' },
   ];
 
