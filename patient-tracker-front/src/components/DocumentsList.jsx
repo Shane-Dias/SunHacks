@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { 
   FiFile, FiDownload, FiShare2, FiTrash2, FiCalendar, FiTag, FiUser, 
-  FiMaximize2, FiQrCode, FiUsers, FiClock, FiShield, FiCheckCircle
+  FiMaximize2, FiUsers, FiClock, FiShield, FiCheckCircle
 } from 'react-icons/fi';
 
 const DocumentsList = ({ patientId, refreshTrigger }) => {
@@ -310,7 +310,7 @@ const DocumentsList = ({ patientId, refreshTrigger }) => {
                 className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-md transition-colors"
                 title="Generate QR Code"
               >
-                <FiQrCode className="h-4 w-4" />
+                <FiMaximize2 className="h-4 w-4" />
               </button>
 
               <button
