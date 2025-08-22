@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 registerUser = async (req, res) => {
   try {
     const { username, email, password, role, ...userData } = req.body;
-
+    let contactNum= userData.contact;
     // Check if user already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
@@ -38,7 +38,8 @@ registerUser = async (req, res) => {
         username,
         email, 
         password, 
-        role: 'patient'
+        role: 'patient',
+        contact: contactNum,
       });
       await patientUser.save();
       
@@ -49,11 +50,11 @@ registerUser = async (req, res) => {
         
       }, process.env.JWT_SECRET);
       
-      res.status(201).send({ 
-        message: "Patient registered successfully",
-        user: username,
-        token 
-      });
+    res.status(201).send({ 
+  message: "Patient registered successfully",
+  user: patientUser.toObject(), // send the full user object
+  token 
+});
     } else {
       return res.status(400).send({ message: "Invalid role specified" });
     }

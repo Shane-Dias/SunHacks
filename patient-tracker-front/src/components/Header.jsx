@@ -18,7 +18,9 @@ const Header = () => {
 
   const getGreeting = () => {
     if (!user) return '';
-    return role === 'doctor' ? `Dr. ${user.username}` : user.username;
+    if(role==='doctor') return `Dr. ${user.username}`;
+    if(role==='patient') return `Patient ${user.username}`;
+    return user.username;
   };
 
   return (

@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
    email: { type: String, unique: true, required: true },
    password: { type: String, required: true },
    role: { type: String, enum: ['doctor', 'patient'], required: true },
+  
    // For patients, we'll store reference to their patient record
    patientRecord: {
       type: mongoose.Schema.Types.ObjectId,

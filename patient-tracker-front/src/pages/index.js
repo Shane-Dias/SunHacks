@@ -7,3 +7,5 @@ export { default as AppointmentsPage } from './AppointmentsPage';
 export { default as Patients } from './Patients';
 export {default as ManageAppointments } from './ManageAppointments';
 export {default as HealthMetrics } from './HealthMetrics';
+// In pages/index.js, add this export
+export { default as PatientDashboard } from './PatientDashboard';

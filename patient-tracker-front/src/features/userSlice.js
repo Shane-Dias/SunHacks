@@ -9,10 +9,26 @@ const getUserFromLocalStorage = () => {
   }
 };
 
+const getPatientRecordId = () => {
+  try {
+    // Try to get from localStorage first
+    const id = localStorage.getItem('patientRecordId');
+    if (id) return id;
+    // Fallback: try to get from user object
+    const user = getUserFromLocalStorage();
+    if (user && (user.patientRecord || user._id)) {
+      return user.patientRecord || user._id;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
 const initialState = {
   user: getUserFromLocalStorage(),
   role: localStorage.getItem('role') || null,
-  patientRecordId: localStorage.getItem('patientRecordId') || null,
+  patientRecordId: getPatientRecordId(),
 };
 
 const userSlice = createSlice({
@@ -23,13 +39,17 @@ const userSlice = createSlice({
       const { user, token } = action.payload;
       state.user = user;
       state.role = user.role;
-      
-      // Store patient record ID if available
-      if (user.patientRecord) {
-        state.patientRecordId = user.patientRecord;
-        localStorage.setItem('patientRecordId', user.patientRecord);
+
+      // Store patient record ID if available (try both patientRecord and _id)
+      let patientRecordId = user.patientRecord || user._id || null;
+      if (user.role === 'patient' && patientRecordId) {
+        state.patientRecordId = patientRecordId;
+        localStorage.setItem('patientRecordId', patientRecordId);
+      } else {
+        state.patientRecordId = null;
+        localStorage.removeItem('patientRecordId');
       }
-      
+
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
       localStorage.setItem('role', user.role);
