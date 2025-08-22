@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { HomeLayout, Login, Landing, Patients, ProfilePage, Register, AppointmentsPage, ManageAppointments, HealthMetrics } from './pages';
+import { HomeLayout, Login, Landing, Patients, ProfilePage, Register, AppointmentsPage, ManageAppointments, HealthMetrics, Documents, DocumentAccess } from './pages';
 import { store } from './store';
 import { SinglePatient } from './components';
 import { loader as patientLoader } from './pages/Patients';
@@ -93,8 +93,20 @@ const router = createBrowserRouter([
     ),
     loader: healthMetricsLoader(queryClient)
    },
+   {
+     path: 'documents',
+     element: (
+      <ProtectedRoute>
+        <Documents />
+      </ProtectedRoute>
+    ),
+   },
   
  ]
+},
+{
+ path: '/document-access/:accessToken',
+ element: <DocumentAccess />,
 },
 {
  path: '/login',

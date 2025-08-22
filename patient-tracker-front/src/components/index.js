@@ -9,3 +9,5 @@ export { default as PatientList } from './PatientList';
 export { default as SinglePatient } from './SinglePatient';
 export { default as AppointmentsList } from './AppointmentsList';
 export { default as AppointmentRegister } from './AppointmentRegister';
+export { default as DocumentUpload } from './DocumentUpload';
+export { default as DocumentsList } from './DocumentsList';

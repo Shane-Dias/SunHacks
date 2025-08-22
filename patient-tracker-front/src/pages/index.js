@@ -7,3 +7,5 @@ export { default as AppointmentsPage } from './AppointmentsPage';
 export { default as Patients } from './Patients';
 export {default as ManageAppointments } from './ManageAppointments';
 export {default as HealthMetrics } from './HealthMetrics';
+export { default as Documents } from './Documents';
+export { default as DocumentAccess } from './DocumentAccess';
