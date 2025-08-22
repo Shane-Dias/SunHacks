@@ -20,7 +20,9 @@ const NavLinks = ({ isMobile = false }) => {
       return [
         ...commonLinks,
         { id: 2, url: 'manage-patient', text: 'Manage Patients' },
-        { id: 3, url: 'appointments', text: 'Appointments' }
+        { id: 3, url: 'appointments', text: 'Appointments' },
+        { id: 6, url: 'analyzer', text: 'Health Analyzer' },
+        { id: 7, url: 'detector', text: 'Health Detector' }
       ];
     }
 
@@ -28,7 +30,9 @@ const NavLinks = ({ isMobile = false }) => {
       return [
         ...commonLinks,
         { id: 4, url: 'medical-history', text: 'Medical Records' },
-        { id: 5, url: 'patient-dashboard', text: 'My Appointments' }
+        { id: 5, url: 'patient-dashboard', text: 'My Appointments' },
+        { id: 6, url: 'analyzer', text: 'Health Analyzer' },
+        { id: 7, url: 'detector', text: 'Health Detector' }
       ];
     }
 
