@@ -18,6 +18,7 @@ import {
 import { store } from './store';
 import HealthReportAnalyzer from './pages/HealthReportAnalyzer';
 import HealthDetector from './pages/HealthDetector';
+import AIVirtualCallingSystem from './pages/AIVirtualCallingSystem';
 
 // Import components
 import { SinglePatient } from './components';
@@ -137,6 +138,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <HealthDetector />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'calls',
+        element: (
+          <ProtectedRoute>
+            <AIVirtualCallingSystem />
           </ProtectedRoute>
         )
       },
