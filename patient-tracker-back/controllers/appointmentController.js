@@ -1,5 +1,7 @@
 const Appointment = require('../models/appointment'); // Adjust path as necessary
-
+const sendMail = require('../services/nodemailer'); // Adjust the path as needed
+const Doctor = require('../models/doctor');
+const Patient = require('../models/patients');
 
 getAllAppointments = async (req, res) => {
   try {
@@ -29,19 +31,44 @@ getAppointmentById = async (req, res) => {
 
 scheduleAppointment = async (req, res) => {
   const appointment = new Appointment({
-      patient: req.body.patient,
-      date: req.body.date,
-      purpose: req.body.purpose,
-      doctor: req.body.doctor
+    patient: req.body.patient,
+    date: req.body.date,
+    purpose: req.body.purpose,
+    doctor: req.body.doctor
   });
 
-
   try {
-      const newAppointment = await appointment.save();
-      res.status(201).json(newAppointment);
+    const newAppointment = await appointment.save();
+
+    // Populate doctor and patient to get their emails
+    const populatedAppointment = await Appointment.findById(newAppointment._id)
+      .populate('doctor', 'email username')
+      .populate('patient', 'email username')
+      .exec();
+
+    // Prepare email details
+    const doctorEmail = populatedAppointment.doctor.email;
+    const doctorName = populatedAppointment.doctor.username;
+    const patientEmail = populatedAppointment.patient.email;
+    const patientName = populatedAppointment.patient.username;
+
+    // Compose subject and message
+    const subject = `New Appointment Scheduled with Dr. ${doctorName}`;
+    const message = `
+      <p>Dear ${patientName},</p>
+      <p>Your appointment has been scheduled with Dr. ${doctorName}.</p>
+      <p><strong>Date:</strong> ${populatedAppointment.date}</p>
+      <p><strong>Purpose:</strong> ${populatedAppointment.purpose}</p>
+      <p>Thank you for using HealthLock.</p>
+    `;
+
+    // Send email from doctor to patient
+    await sendMail(doctorEmail, patientEmail, subject, message);
+
+    res.status(201).json(newAppointment);
   } catch (err) {
-      res.status(400).json({ message: err.message });
-      console.log(err)
+    console.error('Error scheduling appointment or sending email:', err);
+    res.status(400).json({ message: err.message });
   }
 };
 
