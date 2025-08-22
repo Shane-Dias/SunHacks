@@ -16,6 +16,8 @@ import {
   DocumentAccess 
 } from './pages';
 import { store } from './store';
+import HealthReportAnalyzer from './pages/HealthReportAnalyzer';
+import HealthDetector from './pages/HealthDetector';
 
 // Import components
 import { SinglePatient } from './components';
@@ -119,6 +121,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PatientDashboard />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'analyzer',
+        element: (
+          <ProtectedRoute>
+            <HealthReportAnalyzer />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'detector',
+        element: (
+          <ProtectedRoute>
+            <HealthDetector />
           </ProtectedRoute>
         )
       },
