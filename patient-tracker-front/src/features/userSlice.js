@@ -1,38 +1,50 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
-
-
-
 
 const getUserFromLocalStorage = () => {
- return JSON.parse(localStorage.getItem('user')) || null;
+  try {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    return null;
+  }
 };
-
 
 const initialState = {
- user: getUserFromLocalStorage(),
+  user: getUserFromLocalStorage(),
+  role: localStorage.getItem('role') || null,
+  patientRecordId: localStorage.getItem('patientRecordId') || null,
 };
 
-
 const userSlice = createSlice({
- name: 'user',
- initialState,
- reducers: {
-   loginUser: (state, action) => {
-     const user = { ...action.payload.doctor, token: action.payload.token };
-     state.user = user;
-     localStorage.setItem('user', JSON.stringify(user));
-   },
-   logoutUser: (state) => {
-     state.user = null;
-     localStorage.removeItem('user');
-     toast.success('Logged out successfully');
-   },
- },
+  name: 'user',
+  initialState,
+  reducers: {
+    loginUser: (state, action) => {
+      const { user, token } = action.payload;
+      state.user = user;
+      state.role = user.role;
+      
+      // Store patient record ID if available
+      if (user.patientRecord) {
+        state.patientRecordId = user.patientRecord;
+        localStorage.setItem('patientRecordId', user.patientRecord);
+      }
+      
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', user.role);
+    },
+    logoutUser: (state) => {
+      state.user = null;
+      state.role = null;
+      state.patientRecordId = null;
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('patientRecordId');
+    },
+  },
 });
 
-
 export const { loginUser, logoutUser } = userSlice.actions;
-
-
 export default userSlice.reducer;

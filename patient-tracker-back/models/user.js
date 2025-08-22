@@ -1,27 +1,24 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const doctorSchema = new mongoose.Schema({
-   username: String,
+const userSchema = new mongoose.Schema({
+   username: { type: String, required: true },
    email: { type: String, unique: true, required: true },
    password: { type: String, required: true },
-   role: { type: String, enum: ['doctor', 'patient'], required: true, default: 'doctor' },
+   role: { type: String, enum: ['doctor', 'patient'], required: true },
+   // For patients, we'll store reference to their patient record
    patientRecord: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Patient'
-   },
-   patients: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Patient',
-      default: []
-   }],
+   }
 });
+
 // Pre-save hook to hash the password
-doctorSchema.pre('save', async function(next) {
+userSchema.pre('save', async function(next) {
    if (this.isModified('password')) {
        this.password = await bcrypt.hash(this.password, 8);
    }
    next();
 });
 
-module.exports = mongoose.model('Doctor', doctorSchema);
+module.exports = mongoose.model('User', userSchema);
