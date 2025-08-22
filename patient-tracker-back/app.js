@@ -42,11 +42,11 @@ mongoose.connection.on('error', (err) => console.log('❌ Error connecting to Mo
 mongoose.connection.on('disconnected', () => console.log('⚠️ Disconnected from MongoDB'));
 
 // Public routes (no authentication required)
+app.use('/api/doctors', doctorRoutes); // login/register must be public
 app.use('/api/documents/public', publicDocumentRoutes);
 
 // Protected routes (require authentication)
 app.use(verifyToken);
-app.use('/api/doctors', doctorRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/patient-health-metrics', patientHealthMetricsRoutes);
