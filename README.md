@@ -50,7 +50,7 @@ Traditional healthcare systems face challenges with data security, accessibility
 - *MongoDB* - NoSQL database
 - *Mongoose* - MongoDB object modeling
 - *JWT* - Authentication tokens
-- *Google Gemini AI* - Advanced AI analysis
+- *Google Gemini AI* - Advanced AI analysis [Gemini-1.5-flask]
 - *WebSocket* - Real-time communication
 
 ### AI & Computer Vision
