@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Calendar, Phone, User, Clock, FileText, X, Check } from "lucide-react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const PatientAppointmentSystem = () => {
   const token = localStorage.getItem("token");
@@ -9,15 +11,13 @@ const PatientAppointmentSystem = () => {
       id: "68a7e1df72c089bf39ae14c2",
       name: "Chetan",
       mobile: "9856124513",
-      qrCode:
-        "https://qrexplore.com/icon/apple-icon.png",
+      qrCode: "https://qrexplore.com/icon/apple-icon.png",
     },
     {
       id: "68a7eaa910c07afae848c0e7",
       name: "Astel dmello",
       mobile: "1122334455",
-      qrCode:
-        "https://qrexplore.com/icon/apple-icon.png",
+      qrCode: "https://qrexplore.com/icon/apple-icon.png",
     },
   ]);
 
@@ -42,18 +42,24 @@ const PatientAppointmentSystem = () => {
   const handleSubmitAppointment = async () => {
     if (appointmentDate && appointmentPurpose) {
       try {
-        // Simulated API call - replace with actual axios call in your environment
-        const appointmentData = {
-          patient: selectedPatient.id,
-          date: appointmentDate,
-          purpose: appointmentPurpose,
-          doctor: "68a76717d9bba4b64698396c",
-        };
+        const response = await axios.post(
+          "http://localhost:5000/api/appointments",
+          {
+            patient: selectedPatient.id,
+            date: appointmentDate,
+            purpose: appointmentPurpose,
+            doctor: "68a76717d9bba4b64698396c", // Replace with actual doctor ID (from context/store)
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        console.log("Appointment scheduled:", appointmentData);
+        console.log("Appointment scheduled:", response.data);
 
-        // Simulated success toast - replace with actual toast in your environment
-        alert(
+        toast.success(
           `Appointment scheduled for ${selectedPatient.name} on ${appointmentDate}`
         );
 
@@ -86,7 +92,7 @@ const PatientAppointmentSystem = () => {
 
   return (
     <div className="bg-white min-h-screen py-12">
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-16">
@@ -181,11 +187,13 @@ const PatientAppointmentSystem = () => {
                       onClick={() => handleQRClick(patient)}
                       className="bg-primaryLight/50 p-4 rounded-xl border-2 border-dashed border-primary/30 hover:border-primary/60 hover:bg-primaryLight/80 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary/20"
                     >
-                      <img
-                        src={patient.qrCode}
-                        alt={`QR Code for ${patient.name}`}
-                        className="w-24 h-24 rounded-lg"
-                      />
+                      <a href="http://localhost:5173/document-access/ab6211411c68aedf9dd8024237656b1a1be1d44cea6b600dc60da62990eda135">
+                        <img
+                          src={patient.qrCode}
+                          alt={`QR Code for ${patient.name}`}
+                          className="w-24 h-24 rounded-lg"
+                        />
+                      </a>
                       <p className="text-xs text-primary mt-2 text-center font-medium">
                         Patient QR
                       </p>

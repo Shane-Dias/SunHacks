@@ -53,17 +53,17 @@ scheduleAppointment = async (req, res) => {
     const patientName = populatedAppointment.patient.username;
 
     // Compose subject and message
-    const subject = `New Appointment Scheduled with Dr. ${doctorName}`;
-    const message = `
-      <p>Dear ${patientName},</p>
-      <p>Your appointment has been scheduled with Dr. ${doctorName}.</p>
-      <p><strong>Date:</strong> ${populatedAppointment.date}</p>
-      <p><strong>Purpose:</strong> ${populatedAppointment.purpose}</p>
-      <p>Thank you for using HealthLock.</p>
-    `;
+    // const subject = `New Appointment Scheduled with Dr. ${doctorName}`;
+    // const message = `
+    //   <p>Dear ${patientName},</p>
+    //   <p>Your appointment has been scheduled with Dr. ${doctorName}.</p>
+    //   <p><strong>Date:</strong> ${populatedAppointment.date}</p>
+    //   <p><strong>Purpose:</strong> ${populatedAppointment.purpose}</p>
+    //   <p>Thank you for using HealthLock.</p>
+    // `;
 
-    // Send email from doctor to patient
-    await sendMail(doctorEmail, patientEmail, subject, message);
+    // // Send email from doctor to patient
+    // await sendMail(doctorEmail, patientEmail, subject, message);
 
     res.status(201).json(newAppointment);
   } catch (err) {
