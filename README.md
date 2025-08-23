@@ -135,12 +135,7 @@ Traditional healthcare systems face challenges with data security, accessibility
 - *Advanced AI Diagnostics* with medical imaging analysis
 - *Telehealth Integration* with real doctor consultations
 
-## 📞 Support
 
-For technical support or questions about HealthLock, please contact:
-- Email: support@healthlock.com
-- Documentation: [HealthLock Docs](https://docs.healthlock.com)
-- Community: [HealthLock Forum](https://forum.healthlock.com)
 
 ---
 
