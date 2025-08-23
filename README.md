@@ -140,3 +140,5 @@ Traditional healthcare systems face challenges with data security, accessibility
 ---
 
 *HealthLock* - Revolutionizing healthcare through secure technology and artificial intelligence. Making healthcare accessible, secure, and intelligent for everyone.
+
+Made with ❤️ Team Quadra Luminate
